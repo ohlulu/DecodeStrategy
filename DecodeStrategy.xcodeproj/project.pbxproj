@@ -91,7 +91,7 @@
 		506E23B524BBFA970047F5F5 /* DecodeStrategy */ = {
 			isa = PBXGroup;
 			children = (
-				506E23CD24BBFBF10047F5F5 /* Source */,
+				506E23CD24BBFBF10047F5F5 /* Sources */,
 				506E23B624BBFA970047F5F5 /* DecodeStrategy.h */,
 				506E23B724BBFA970047F5F5 /* Info.plist */,
 			);
@@ -110,7 +110,7 @@
 			path = DecodeStrategyTests;
 			sourceTree = "<group>";
 		};
-		506E23CD24BBFBF10047F5F5 /* Source */ = {
+		506E23CD24BBFBF10047F5F5 /* Sources */ = {
 			isa = PBXGroup;
 			children = (
 				50A0E60124BD90A4006EA8EF /* DefaultValueProvoder.swift */,
@@ -121,7 +121,7 @@
 				50A0E60524BD981A006EA8EF /* DecodeUniversal.swift */,
 				50E651E524C023AF00664973 /* DecodeErrorHandler.swift */,
 			);
-			path = Source;
+			path = Sources;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
