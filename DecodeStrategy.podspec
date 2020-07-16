@@ -18,6 +18,6 @@ Pod::Spec.new do |s|
   s.ios.deployment_target = '11.0'
   s.cocoapods_version     = '>= 1.4.0'
   s.swift_version         = '5.1.2'
-  s.source_files          = 'Sources/**/*'
+  s.source_files          = 'DecodeStrategy/Sources/**/*'
   s.frameworks  = "Foundation"
 end
