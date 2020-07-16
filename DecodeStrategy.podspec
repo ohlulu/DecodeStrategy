@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = 'DecodeStrategy'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Decode strategy with @propertywrapper.'
 
   s.description      = <<-DESC
