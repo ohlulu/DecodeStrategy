@@ -14,14 +14,14 @@ class DecodeHasDefault_Test: XCTestCase {
     let decoder = JSONDecoder()
     
     struct User: Decodable {
-        struct NameDefault: DecodeDefaultProvoder {
+        struct NameDefault: DecodeDefaultProvider {
             static var defaultValue: String = "ohlulu"
         }
         
         @DecodeHasDefault<NameDefault>
         var name: String
         
-        struct AgeDefault: DecodeDefaultProvoder {
+        struct AgeDefault: DecodeDefaultProvider {
             static var defaultValue: Int = 18
         }
         
@@ -89,7 +89,7 @@ class DecodeHasDefault_Test: XCTestCase {
         @DecodeHasDefault<ZeroDouble> var doubleValue: Double
     }
     
-    func test_defaultProvoder() {
+    func test_defaultProvider() {
         let data = """
         {
             "strValue": 123,

@@ -11,7 +11,7 @@ import DecodeStrategy
 
 struct UserList_HasDefault: Decodable {
     
-    struct UserInfoDefault: DecodeDefaultProvoder {
+    struct UserInfoDefault: DecodeDefaultProvider {
         static var defaultValue = UserList_HasDefault.UserInfo()
     }
     

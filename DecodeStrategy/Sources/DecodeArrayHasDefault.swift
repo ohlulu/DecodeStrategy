@@ -9,23 +9,23 @@
 import Foundation
 
 @propertyWrapper
-public struct DecodeArrayHasDefault<Provoder: DecodeDefaultProvoder>: Decodable {
+public struct DecodeArrayHasDefault<Provider: DecodeDefaultProvider>: Decodable {
     
-    public var wrappedValue: [Provoder.Value]
+    public var wrappedValue: [Provider.Value]
     
     public init(from decoder: Decoder) throws {
         
         var container = try decoder.unkeyedContainer()
-        var result = [Provoder.Value]()
+        var result = [Provider.Value]()
         var errors = [Error]()
         
         while !container.isAtEnd {
             do {
-                let element = try container.decode(Provoder.Value.self)
+                let element = try container.decode(Provider.Value.self)
                 result.append(element)
             } catch {
                 _ = try container.decode(AnyDecodable.self)
-                result.append(Provoder.defaultValue)
+                result.append(Provider.defaultValue)
                 errors.append(error)
             }
         }

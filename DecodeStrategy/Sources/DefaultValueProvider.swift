@@ -1,5 +1,5 @@
 //
-//  DefaultValueProvoder.swift
+//  DefaultValueProvider.swift
 //  DecodeStrategy
 //
 //  Created by Ohlulu on 2020/7/14.
@@ -8,19 +8,19 @@
 
 import Foundation
 
-public protocol DecodeDefaultProvoder {
+public protocol DecodeDefaultProvider {
     associatedtype Value: Decodable
     static var defaultValue: Value { get }
 }
 
-public struct EmptyString: DecodeDefaultProvoder {
+public struct EmptyString: DecodeDefaultProvider {
     public static var defaultValue: String = ""
 }
 
-public struct ZeroInt: DecodeDefaultProvoder {
+public struct ZeroInt: DecodeDefaultProvider {
     public static var defaultValue: Int = 0
 }
 
-public struct ZeroDouble: DecodeDefaultProvoder {
+public struct ZeroDouble: DecodeDefaultProvider {
     public static var defaultValue: Double = 0.0
 }

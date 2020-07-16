@@ -9,11 +9,11 @@
 import Foundation
 
 @propertyWrapper
-public struct DecodeHasDefault<Provoder: DecodeDefaultProvoder>: Decodable {
+public struct DecodeHasDefault<Provider: DecodeDefaultProvider>: Decodable {
     
-    public var wrappedValue: Provoder.Value
+    public var wrappedValue: Provider.Value
     
-    public init(wrappedValue: Provoder.Value) {
+    public init(wrappedValue: Provider.Value) {
         self.wrappedValue = wrappedValue
     }
     
@@ -22,10 +22,10 @@ public struct DecodeHasDefault<Provoder: DecodeDefaultProvoder>: Decodable {
         let container = try decoder.singleValueContainer()
         
         do {
-            wrappedValue = try container.decode(Provoder.Value.self)
+            wrappedValue = try container.decode(Provider.Value.self)
         } catch {
             DecodeStrategy.errorDelegate?.onCatch(error: error)
-            wrappedValue = Provoder.defaultValue
+            wrappedValue = Provider.defaultValue
         }
     }
 }
@@ -33,12 +33,12 @@ public struct DecodeHasDefault<Provoder: DecodeDefaultProvoder>: Decodable {
 public extension KeyedDecodingContainer {
     
     /// If KeyNotFound, use default value
-    func decode<Provoder>(_ type: DecodeHasDefault<Provoder>.Type, forKey key: Key) throws
-        -> DecodeHasDefault<Provoder>
+    func decode<Provider>(_ type: DecodeHasDefault<Provider>.Type, forKey key: Key) throws
+        -> DecodeHasDefault<Provider>
     {
         
-        let defaultValue: () -> DecodeHasDefault<Provoder> = {
-            DecodeHasDefault(wrappedValue: Provoder.defaultValue)
+        let defaultValue: () -> DecodeHasDefault<Provider> = {
+            DecodeHasDefault(wrappedValue: Provider.defaultValue)
         }
         
         do {
