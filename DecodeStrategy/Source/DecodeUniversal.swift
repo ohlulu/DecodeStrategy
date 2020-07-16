@@ -22,6 +22,9 @@ public struct DecodeUniversal<Value: LosslessAndDecodable>: Decodable {
         do {
             wrappedValue = try container.decode(Value.self)
         } catch {
+            
+            DecodeStrategy.errorDelegate?.onCatch(error: error)
+            
             let temp: String
             if let strValue = try? container.decode(String.self) {
                 temp = strValue

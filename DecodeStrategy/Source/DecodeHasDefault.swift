@@ -18,9 +18,15 @@ public struct DecodeHasDefault<Provoder: DecodeDefaultProvoder>: Decodable {
     }
     
     public init(from decoder: Decoder) throws {
+        
         let container = try decoder.singleValueContainer()
         
-        wrappedValue = (try? container.decode(Provoder.Value.self)) ?? Provoder.defaultValue
+        do {
+            wrappedValue = try container.decode(Provoder.Value.self)
+        } catch {
+            DecodeStrategy.errorDelegate?.onCatch(error: error)
+            wrappedValue = Provoder.defaultValue
+        }
     }
 }
 
@@ -30,10 +36,16 @@ public extension KeyedDecodingContainer {
     func decode<Provoder>(_ type: DecodeHasDefault<Provoder>.Type, forKey key: Key) throws
         -> DecodeHasDefault<Provoder>
     {
-        if let value = try? decodeIfPresent(type.self, forKey: key) {
-            return value
-        } else {
-            return DecodeHasDefault(wrappedValue: Provoder.defaultValue)
+        
+        let defaultValue: () -> DecodeHasDefault<Provoder> = {
+            DecodeHasDefault(wrappedValue: Provoder.defaultValue)
+        }
+        
+        do {
+            return try decodeIfPresent(type.self, forKey: key) ?? defaultValue()
+        } catch {
+            DecodeStrategy.errorDelegate?.onCatch(error: error)
+            return defaultValue()
         }
     }
 }

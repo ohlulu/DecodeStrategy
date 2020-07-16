@@ -17,14 +17,21 @@ public struct DecodeArrayHasDefault<Provoder: DecodeDefaultProvoder>: Decodable 
         
         var container = try decoder.unkeyedContainer()
         var result = [Provoder.Value]()
+        var errors = [Error]()
         
         while !container.isAtEnd {
-            if let element = try? container.decode(Provoder.Value.self) {
+            do {
+                let element = try container.decode(Provoder.Value.self)
                 result.append(element)
-            } else {
+            } catch {
                 _ = try container.decode(AnyDecodable.self)
                 result.append(Provoder.defaultValue)
+                errors.append(error)
             }
+        }
+        
+        if let delegate = DecodeStrategy.errorDelegate {
+            errors.forEach { delegate.onCatch(error: $0) }
         }
         
         wrappedValue = result

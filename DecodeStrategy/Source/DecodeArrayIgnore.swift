@@ -17,13 +17,20 @@ public struct DecodeArrayIgnore<Value: Decodable>: Decodable {
         
         var container = try decoder.unkeyedContainer()
         var result = [Value]()
+        var errors = [Error]()
         
         while !container.isAtEnd {
-            if let element = try? container.decode(Value.self) {
+            do {
+                let element = try container.decode(Value.self)
                 result.append(element)
-            } else {
+            } catch {
                 _ = try container.decode(AnyDecodable.self)
+                errors.append(error)
             }
+        }
+        
+        if let delegate = DecodeStrategy.errorDelegate {
+            errors.forEach { delegate.onCatch(error: $0) }
         }
         
         wrappedValue = result
