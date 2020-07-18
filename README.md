@@ -4,7 +4,7 @@
 
 DecodeStrategy is convenient applying decode strategy if your backend uses weak type language.
 
-
+[中文介紹](https://www.ohlulu.tw/2020/07/18/decodable_propertywrapper/)
 
 ## Features
 
