@@ -8,10 +8,8 @@
 
 import Foundation
 
-public typealias LosslessAndDecodable = LosslessStringConvertible & Decodable
-
 @propertyWrapper
-public struct DecodeUniversal<Value: LosslessAndDecodable>: Decodable {
+public struct DecodeUniversal<Value: LosslessStringConvertible & Decodable>: Decodable {
     
     public var wrappedValue: Value
     
