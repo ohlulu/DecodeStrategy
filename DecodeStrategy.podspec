@@ -4,7 +4,7 @@ Pod::Spec.new do |s|
   s.summary          = 'Decode strategy with @propertywrapper.'
 
   s.description      = <<-DESC
-  This project is convenient applying decode strategy if your backend uses weak type language.
+  DecodeStrategy is convenient applying decode strategy if your backend uses weak type language.
 
   DESC
    

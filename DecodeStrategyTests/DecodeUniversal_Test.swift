@@ -9,15 +9,15 @@
 import XCTest
 import DecodeStrategy
 
-struct StringAndNumbersModel: Decodable {
-    @DecodeUniversal var strValue: String
-    @DecodeUniversal var intValue: Int
-    @DecodeUniversal var doubleValue: Double
-}
-
 class DecodeUniversal_Test: XCTestCase {
     
     let decoder = JSONDecoder()
+    
+    struct SuccessModel: Decodable {
+        @DecodeUniversal var strValue: String
+        @DecodeUniversal var intValue: Int
+        @DecodeUniversal var doubleValue: Double
+    }
     
     func test_success() {
         let successData = """
@@ -28,7 +28,7 @@ class DecodeUniversal_Test: XCTestCase {
         }
         """.data(using: .utf8)!
         do {
-            let model = try decoder.decode(StringAndNumbersModel.self, from: successData)
+            let model = try decoder.decode(SuccessModel.self, from: successData)
             XCTAssertEqual(model.strValue, "str")
             XCTAssertEqual(model.intValue, 100)
             XCTAssertEqual(model.doubleValue, 1.1)
@@ -37,58 +37,80 @@ class DecodeUniversal_Test: XCTestCase {
         }
     }
     
-    func test_failureOfTyp() {
+    struct StringFailureModel: Decodable {
+        @DecodeUniversal var strValue: String
+        @DecodeUniversal var intValue: String
+        @DecodeUniversal var doubleValue: String
+    }
+    
+    func test_string_failureOfTyp() {
         let failureOfTypeData1 = """
         {
-            "strValue": 100,
-            "intValue": "+200",
-            "doubleValue": "300.1"
+            "strValue": "+100.1",
+            "intValue": 100,
+            "doubleValue": 100.1
         }
         """.data(using: .utf8)!
         do {
-            let model = try decoder.decode(StringAndNumbersModel.self, from: failureOfTypeData1)
-            XCTAssertEqual(model.strValue, "100")
-            XCTAssertEqual(model.intValue, 200)
-            XCTAssertEqual(model.doubleValue, 300.1)
-        } catch {
-            XCTFail("should not error : \(error)")
-        }
-        
-        let failureOfTypeData2 = """
-        {
-            "strValue": 100,
-            "intValue": 2000.0,
-            "doubleValue": 300
-        }
-        """.data(using: .utf8)!
-        do {
-            let model = try decoder.decode(StringAndNumbersModel.self, from: failureOfTypeData2)
-            XCTAssertEqual(model.strValue, "100")
-            XCTAssertEqual(model.intValue, 2000)
-            XCTAssertEqual(model.doubleValue, 300.0)
+            let model = try decoder.decode(StringFailureModel.self, from: failureOfTypeData1)
+            XCTAssertEqual(model.strValue, "+100.1")
+            XCTAssertEqual(model.intValue, "100")
+            XCTAssertEqual(model.doubleValue, "100.1")
         } catch {
             XCTFail("should not error : \(error)")
         }
     }
     
-    func test_failureOfKeyNotFound() {
-        let failureOfTypeData = """
+    struct IntFailureModel: Decodable {
+        @DecodeUniversal var strValue: Int
+        @DecodeUniversal var intValue: Int
+        @DecodeUniversal var doubleValue: Int
+    }
+    
+    func test_int_failureOfType() {
+        
+        let failureOfTypeData2 = """
         {
-            "strValue1": 100,
-            "intValue1": "+200",
-            "doubleValue1": "300.1"
+            "strValue": "+100",
+            "intValue": 100,
+            "doubleValue": 100.1
         }
         """.data(using: .utf8)!
         do {
-            let _ = try decoder.decode(StringAndNumbersModel.self, from: failureOfTypeData)
-            XCTFail("should not success")
+            let model = try decoder.decode(IntFailureModel.self, from: failureOfTypeData2)
+            XCTAssertEqual(model.strValue, 100)
+            XCTAssertEqual(model.intValue, 100)
         } catch let error as DecodingError {
             switch error {
-            case .keyNotFound(_, _):
-                XCTAssert(true)
+            case .dataCorrupted(let context):
+                XCTAssertEqual(context.codingPath.first?.stringValue, "doubleValue")
             default:
                 XCTFail("should not error : \(error)")
             }
+        } catch {
+            XCTFail("should not error : \(error)")
+        }
+    }
+    
+    struct DoubleFailureModel: Decodable {
+        @DecodeUniversal var strValue: Double
+        @DecodeUniversal var intValue: Double
+        @DecodeUniversal var doubleValue: Double
+    }
+    
+    func test_double_failureOfType() {
+        let failureOfTypeData = """
+        {
+            "strValue": "100.1",
+            "intValue": 100,
+            "doubleValue": 100.1
+        }
+        """.data(using: .utf8)!
+        do {
+            let model = try decoder.decode(DoubleFailureModel.self, from: failureOfTypeData)
+            XCTAssertEqual(model.strValue, 100.1)
+            XCTAssertEqual(model.intValue, 100.0)
+            XCTAssertEqual(model.doubleValue, 100.1)
         } catch {
             XCTFail("should not error : \(error)")
         }
