@@ -1,6 +1,8 @@
 # DecodeStrategy
 
-![latest version](https://img.shields.io/cocoapods/v/DecodeStrategy)![license](https://img.shields.io/github/license/ohlulu/DecodeStrategy)![platform](https://img.shields.io/cocoapods/p/DecodeStrategy)
+![latest version](https://img.shields.io/cocoapods/v/DecodeStrategy?label=version)
+![license](https://img.shields.io/github/license/ohlulu/DecodeStrategy)
+![platform](https://img.shields.io/cocoapods/p/DecodeStrategy)
 
 DecodeStrategy is convenient applying decode strategy if your backend uses weak type language.
 
