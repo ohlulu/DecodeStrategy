@@ -10,11 +10,11 @@ DecodeStrategy is convenient applying decode strategy if your backend uses weak 
 
 ## Features
 
-- [x] Decode has default value, if decode failure
+- [x] Value has default value, if decode failure
 
-- [x] Decode array ignore, if decode failure
+- [x] Element of array ignore, if decode failure
 
-- [x] Decode array has default value, if decode failure
+- [x] Element of  array has default value, if decode failure
 
 - [x] Universal decode with String, Int and Double type
 
